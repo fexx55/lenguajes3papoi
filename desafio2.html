@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Desafio 2 - Conversor de Unidades - Silvera Sandoval Ezequiel</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .caja { margin-bottom: 15px; }
+        #resultado { font-size: 18px; font-weight: bold; color: #0056b3; margin-top: 15px; }
+        .error { color: red; font-size: 14px; }
+        #historial { margin-top: 20px; background: #eee; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Conversor de Unidades</h2>
+    
+    <div class="caja">
+        <label>Elige la conversión:</label>
+        <select id="tipoConversion">
+            <option value="1">Kilómetros → Millas</option>
+            <option value="2">Millas → Kilómetros</option>
+            <option value="3">Kilogramos → Libras</option>
+            <option value="4">Libras → Kilogramos</option>
+            <option value="5">Celsius → Fahrenheit</option>
+            <option value="6">Fahrenheit → Celsius</option>
+            <option value="7">Metros → Pies</option>
+        </select>
+    </div>
+
+    <div class="caja">
+        <label>Valor a convertir:</label>
+        <input type="number" id="valor" placeholder="Ingrese numero">
+        <button onclick="convertir()">Convertir</button>
+        <div id="errorConv" class="error"></div>
+    </div>
+
+    <div id="resultado"></div>
+    
+    <div id="historial">
+        <h3>Historial de Conversiones</h3>
+        <ul id="listaHistorial"></ul>
+    </div>
+
+    <script>
+        let historialArreglo = [];
+        function obtenerNumero() {
+            let input = document.getElementById("valor").value;
+            let numero = parseFloat(input);
+            
+            if (input.trim() === "" || isNaN(numero)) {
+                document.getElementById("errorConv").innerHTML = "Ingrese un valor numerico valido.";
+                return null;
+            }
+            document.getElementById("errorConv").innerHTML = "";
+            return numero;
+        }
+        function convertir() {
+            let valor = obtenerNumero();
+            if (valor === null) return;
+
+            let tipo = document.getElementById("tipoConversion").value;
+            let resultado = 0;
+            let mensaje = "";
+
+            switch (tipo) {
+                case "1":
+                    resultado = valor * 0.621371;
+                    mensaje = `${valor} km equivalen a ${resultado.toFixed(2)} millas`;
+                    break;
+                case "2":
+                    resultado = valor * 1.60934;
+                    mensaje = `${valor} millas equivalen a ${resultado.toFixed(2)} km`;
+                    break;
+                case "3":
+                    resultado = valor * 2.20462;
+                    mensaje = `${valor} kg equivalen a ${resultado.toFixed(2)} libras`;
+                    break;
+                case "4":
+                    resultado = valor * 0.453592;
+                    mensaje = `${valor} libras equivalen a ${resultado.toFixed(2)} kg`;
+                    break;
+                case "5":
+                    resultado = (valor * 9/5) + 32;
+                    mensaje = `${valor}°C equivalen a ${resultado.toFixed(2)}°F`;
+                    break;
+                case "6":
+                    resultado = (valor - 32) * 5/9;
+                    mensaje = `${valor}°F equivalen a ${resultado.toFixed(2)}°C`;
+                    break;
+                case "7":
+                    resultado = valor * 3.28084;
+                    mensaje = `${valor} metros equivalen a ${resultado.toFixed(2)} pies`;
+                    break;
+                default:
+                    mensaje = "Opcion no valida.";
+            }
+
+            document.getElementById("resultado").innerHTML = mensaje;
+
+            historialArreglo.push(mensaje);
+            actualizarHistorial();
+        }
+
+        function actualizarHistorial() {
+            let ul = document.getElementById("listaHistorial");
+            let html = "";
+            for (let i = 0; i < historialArreglo.length; i++) {
+                html += `<li>${historialArreglo[i]}</li>`;
+            }
+            ul.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

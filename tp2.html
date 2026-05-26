@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP2-Carrusel E-TECH</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        .carousel-item img {
+            height: 400px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <header>
+        <div id="carruselHardware" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carruselHardware" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carruselHardware" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carruselHardware" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Placa madre y procesador">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                        <h5>Arquitectura de PC</h5>
+                        <p>Selección de componentes para máximo rendimiento.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Servidores en rack">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                        <h5>Infraestructura de Servidores</h5>
+                        <p>Sistemas empresariales y mantenimiento de UPS.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Setup Gaming">                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                        <h5>Armados Custom</h5>
+                        <p>Ensamblaje a medida para gaming y workstations.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carruselHardware" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carruselHardware" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container my-5 flex-grow-1">
+        <div class="row text-center mb-4">
+            <div class="col">
+                <h1 class="display-5 fw-bold text-dark">Evolución del Hardware</h1>
+                <p class="lead text-secondary">Desde computadoras personales hasta infraestructuras de servidores empresariales.</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-primary">Memorias ECC vs Non-ECC</h3>
+                        <p class="card-text text-muted">Las memorias RAM con código de corrección de errores (ECC) son fundamentales en entornos de servidores para prevenir la corrupción de datos, a diferencia de las memorias estándar utilizadas en equipos de escritorio o gaming.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-primary">Mantenimiento Preventivo</h3>
+                        <p class="card-text text-muted">Realizar diagnósticos periódicos, extraer logs de sistemas UPS y monitorear el estado de los discos SSD NVMe alarga significativamente la vida útil de cualquier workstation o servidor corporativo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm bg-dark text-light">
+                        <div class="card-body text-center p-4">
+                            <h3 class="card-title text-warning">Expansión de Autonomía UPS</h3>
+                            <p class="card-text">Instalación, cableado y configuración de bancos de baterías externos de alta capacidad para asegurar el uptime continuo de los servidores ante cortes prolongados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-light py-4 mt-auto">
+        <div class="container text-center">
+            <h5 class="mb-3"> Contacto</h5>
+            <p class="mb-1 text-secondary">
+                <strong>Dirección:</strong> O´higgins 1933, Salta, Argentina
+            </p>
+            <p class="mb-0 text-secondary">
+                <strong>Contacto para consultas:</strong> etechserviciotecnicoweb@gmail.com
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

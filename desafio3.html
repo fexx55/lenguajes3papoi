@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Desafio 3 - Estadisticas Numericas - Silvera Sandoval Ezequiel</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .panel { margin-top: 20px; padding: 15px; border: 1px solid #ccc; background-color: #fcfcfc; }
+        .error { color: red; font-size: 14px; display: block; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Registrador de Numeros</h2>
+    
+    <div>
+        <label>Ingresar numero:</label>
+        <input type="number" id="numeroIngresado">
+        <button onclick="agregarNumero()">Agregar numero</button>
+        <button onclick="tablaMultiplicar()">Ver tabla de multiplicar</button>
+        <button onclick="reiniciar()">Reiniciar</button>
+        <span id="errorNum" class="error"></span>
+    </div>
+
+    <div id="listaNumeros" class="panel"><em>No hay numeros ingresados.</em></div>
+    <div id="estadisticas" class="panel"><em>Estadisticas vacias.</em></div>
+    <div id="tabla" class="panel"><em>Tabla de multiplicar.</em></div>
+
+    <script>
+        let numeros = [];
+        function agregarNumero() {
+            let inputDom = document.getElementById("numeroIngresado");
+            let valorInput = inputDom.value;
+            let numeroValidado;
+
+            // extra
+            let valid = false;
+            do {
+                if (valorInput.trim() === "" || isNaN(parseFloat(valorInput))) {
+                    document.getElementById("errorNum").innerHTML = "Error: El valor ingresado no es un numero valido.";
+                    break; 
+                }
+                numeroValidado = parseFloat(valorInput);
+                document.getElementById("errorNum").innerHTML = "";
+                valid = true;
+            } while(false);
+
+            if (!valid) return;
+            numeros.push(numeroValidado);
+            
+            mostrarNumeros();
+            calcularEstadisticas();
+
+            inputDom.value = "";
+            inputDom.focus();
+        }
+        function mostrarNumeros() {
+            let divLista = document.getElementById("listaNumeros");
+            if (numeros.length === 0) {
+                divLista.innerHTML = "<em>No hay numeros ingresados.</em>";
+                return;
+            }
+
+            let html = "<strong>Numeros ingresados:</strong> ";
+            for(let i = 0; i < numeros.length; i++) {
+                html += numeros[i] + (i < numeros.length - 1 ? ", " : "");
+            }
+            html += `<br><br><em>Total de elementos: ${numeros.length}</em>`;
+            divLista.innerHTML = html;
+        }
+
+        function calcularEstadisticas() {
+            if (numeros.length === 0) return;
+
+            let suma = 0;
+            let positivos = 0;
+            let negativos = 0;
+            let mayor = numeros[0];
+            let menor = numeros[0];
+            
+            let i = 0;
+            while (i < numeros.length) {
+                let num = numeros[i];
+                suma += num;
+                
+                if (num >= 0) positivos++;
+                else negativos++;
+
+                if (num > mayor) mayor = num;
+                if (num < menor) menor = num;
+
+                i++;
+            }
+
+            let promedio = suma / numeros.length;
+            let html = `<strong>Suma total:</strong> ${suma} <br>`;
+            html += `<strong>Promedio:</strong> ${promedio.toFixed(2)} <br>`;
+            html += `<strong>Positivos:</strong> ${positivos} | <strong>Negativos:</strong> ${negativos} <br>`;
+            html += `<strong>Mayor:</strong> ${mayor} | <strong>Menor:</strong> ${menor}`;
+            
+            document.getElementById("estadisticas").innerHTML = html;
+        }
+        function tablaMultiplicar() {
+            if (numeros.length === 0) {
+                document.getElementById("errorNum").innerHTML = "Primero debe ingresar al menos un numero al array.";
+                return;
+            }
+            let numTabla = numeros[numeros.length - 1]; 
+            let html = `<strong>Tabla del ${numTabla}:</strong><br>`;
+            
+            for(let i = 1; i <= 10; i++) {
+                html += `${numTabla} x ${i} = ${numTabla * i} <br>`;
+            }
+            
+            document.getElementById("tabla").innerHTML = html;
+            document.getElementById("errorNum").innerHTML = "";
+        }
+        function reiniciar() {
+            numeros = [];
+            document.getElementById("listaNumeros").innerHTML = "<em>No hay numeros ingresados.</em>";
+            document.getElementById("estadisticas").innerHTML = "<em>Estadisticas vacias.</em>";
+            document.getElementById("tabla").innerHTML = "<em>Tabla de multiplicar.</em>";
+            document.getElementById("numeroIngresado").value = "";
+            document.getElementById("errorNum").innerHTML = "";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP6-Gestor Ezequiel Silvera Sandoval</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    
+    <style>
+        #tituloPrincipal {
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body text-center">
+            <h1 id="tituloPrincipal" class="fw-bold">Gestor de Tareas</h1>
+            <p class="text-muted">Panel de control y seguimiento</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Nueva Tarea</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formTarea">
+                        <div class="mb-3">
+                            <label for="nombreTarea" class="form-label">Nombre de la Tarea</label>
+                            <input type="text" id="nombreTarea" class="form-control" placeholder="Ej: Instalar UPS 3KVA">
+                            <div id="errorTarea" class="text-danger small mt-1" style="display: none;">El nombre de la tarea no puede estar vacío.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prioridadTarea" class="form-label">Prioridad</label>
+                            <select id="prioridadTarea" class="form-select">
+                                <option value="Alta">Alta</option>
+                                <option value="Media" selected>Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
+                        </div>
+                        <button type="button" id="btnAgregar" class="btn btn-primary w-100">Agregar Tarea</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table id="tablaTareas" class="table table-striped table-hover w-100">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Prioridad</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        
+        // data tables
+        let tabla = $('#tablaTareas').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+            }
+        });
+
+        // mouse 
+        $('#tituloPrincipal').hover(
+            function() {
+                // mouse entra
+                $(this).css('color', '#0d6efd'); 
+            }, 
+            function() {
+                // mouse sale
+                $(this).css('color', '#212529'); 
+            }
+        );
+
+        // boton agregar
+        $('#btnAgregar').click(function() {
+            
+            let nombre = $('#nombreTarea').val().trim();
+            let prioridad = $('#prioridadTarea').val();
+
+            if (nombre === '') {
+                $('#errorTarea').fadeIn();
+                $('#nombreTarea').addClass('is-invalid');
+                return; 
+            } else {
+                $('#errorTarea').fadeOut();
+                $('#nombreTarea').removeClass('is-invalid');
+            }
+
+            // boton eliminar 
+            let botonEliminar = '<button class="btn btn-danger btn-sm btn-eliminar">Eliminar</button>';
+
+            // agragar tarea
+            let nodoFila = tabla.row.add([
+                nombre,
+                prioridad,
+                botonEliminar
+            ]).draw(false).node();
+
+            $(nodoFila).hide().fadeIn(800);
+
+            // limpiar formulario
+            $('#nombreTarea').val('');
+            $('#prioridadTarea').val('Media');
+        });
+
+        $('#tablaTareas tbody').on('click', '.btn-eliminar', function () {
+            
+            let fila = $(this).closest('tr');
+            
+            fila.fadeOut(600, function() {
+                tabla.row(fila).remove().draw(false);
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

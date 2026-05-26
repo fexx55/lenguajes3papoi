@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicios TP TEORIA-DOM</title>
+    <style>
+        /* ejercicio 3 */
+        .resaltado { background-color: yellow; color: black; font-weight: bold; }
+        
+        /* ejercicio 5 */
+        .tarjeta { border: 1px solid #ccc; padding: 15px; margin: 10px; text-align: center; width: 180px; border-radius: 8px;}
+    </style>
+</head>
+<body>
+
+    <h3>1. Lista Dinámica</h3>
+    <ul id="listaNombres"></ul>
+
+    <h3>2. Modificar Contenido</h3>
+    <p id="textoOriginal">Este es el texto original sin modificar.</p>
+    <button onclick="cambiarTexto('textoOriginal', 'El contenido ha sido modificado exitosamente')">Modificar Texto</button>
+
+    <h3>3. Toggle de Clases</h3>
+    <button id="botonClase">Haz clic aquí para agregar/quitar la clase</button>
+
+    <h3>4. Formulario Dinámico</h3>
+    <form id="formularioDinamico">
+        <input type="text" id="inputValor" placeholder="Ingresa un dato" required>
+        <button type="submit">Guardar en Array</button>
+    </form>
+    <div id="resultadoValores" style="margin-top: 10px; font-weight: bold;"></div>
+
+    <h3>5. Tarjetas con Datos</h3>
+    <div id="contenedorTarjetas" style="display: flex; gap: 15px;"></div>
+
+    <script>
+        // --- resolución ejercicio 1 ---
+        const arrayNombres = ["Ezequiel", "Ana", "Carlos", "María"];
+        const ul = document.getElementById("listaNombres");
+        arrayNombres.forEach(nombre => {
+            const li = document.createElement("li");
+            li.textContent = nombre;
+            ul.appendChild(li);
+        });
+
+        // --- resolución ejercicio 2 ---
+        function cambiarTexto(idElemento, nuevoTexto) {
+            document.getElementById(idElemento).textContent = nuevoTexto;
+        }
+
+        // --- resolución ejercicio 3 ---
+        const botonClase = document.getElementById("botonClase");
+        botonClase.addEventListener("click", function() {
+            // toggle() evalúa si la clase existe: si está la quita, si no está la agrega
+            this.classList.toggle("resaltado");
+        });
+
+        // --- resolución ejercicio 4 ---
+        const valoresGuardados = [];
+        const formulario = document.getElementById("formularioDinamico");
+        const resultadoDOM = document.getElementById("resultadoValores");
+
+        formulario.addEventListener("submit", function(evento) {
+            evento.preventDefault(); // evita la recarga de la página
+            const input = document.getElementById("inputValor");
+            
+            valoresGuardados.push(input.value); // guarda en el array
+            input.value = ""; // limpia la caja de texto
+            
+            // muestra los datos en el DOM
+            resultadoDOM.textContent = "Datos almacenados: " + valoresGuardados.join(" | ");
+        });
+
+        // --- resolución ejercicio 5 ---
+        const arrayTarjetas = [
+            { nombre: "Producto 1", desc: "Descripción del primer ítem", img: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=100&h=100&fit=crop" },
+            { nombre: "Producto 2", desc: "Descripción del segundo ítem", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=100&h=100&fit=crop" }
+        ];
+        const contenedor = document.getElementById("contenedorTarjetas");
+
+        arrayTarjetas.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "tarjeta"; // asignar un estilo
+            
+            // tarjetas
+            div.innerHTML = `
+                <img src="${item.img}" alt="${item.nombre}" style="border-radius: 4px;">
+                <h4>${item.nombre}</h4>
+                <p>${item.desc}</p>
+            `;
+            contenedor.appendChild(div);
+        });
+    </script>
+</body>
+</html>

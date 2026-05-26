@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP5-Formulario Silvera Sandoval Ezequiel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5 mb-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Registro de Administradores</h4>
+        </div>
+        <div class="card-body p-4">
+            
+            <div id="cajaErrores" class="alert alert-danger d-none" role="alert">
+                <ul id="listaErrores" class="mb-0"></ul>
+            </div>
+            <div id="mensajeExito" class="alert alert-success d-none" role="alert">
+                Registro validado
+            </div>
+
+            <form id="formularioRegistro">
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" placeholder="Ej: Ezequiel">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" placeholder="Ej: Silvera">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Institucional UCASAL</label>
+                    <input type="email" class="form-control" id="email" placeholder="usuario@ucasal.edu.ar">
+                </div>
+
+                <div class="mb-3">
+                    <label for="fechaNac" class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fechaNac">
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label for="pass1" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="pass1" placeholder="*****">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="pass2" class="form-label">Repetir Contraseña</label>
+                        <input type="password" class="form-control" id="pass2" placeholder="*****">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Enviar Registro</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('formularioRegistro').addEventListener('submit', function(evento) {
+        // para que no se recargue
+        evento.preventDefault();
+
+        // borra mensajes anteriores
+        const cajaErrores = document.getElementById('cajaErrores');
+        const listaErrores = document.getElementById('listaErrores');
+        const mensajeExito = document.getElementById('mensajeExito');
+        listaErrores.innerHTML = '';
+        cajaErrores.classList.add('d-none');
+        mensajeExito.classList.add('d-none');
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const apellido = document.getElementById('apellido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const fechaNac = document.getElementById('fechaNac').value;
+        const pass1 = document.getElementById('pass1').value;
+        const pass2 = document.getElementById('pass2').value;
+
+        let errores = [];
+
+        // validacion completos
+        if (!nombre || !apellido || !email || !fechaNac || !pass1 || !pass2) {
+            errores.push("Todos los campos son obligatorios.");
+        }
+
+        // validacion letras
+        const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        
+        if (nombre && (nombre.length <= 3 || !regexLetras.test(nombre))) {
+            errores.push("El nombre debe tener más de 3 caracteres y contener solo letras.");
+        }
+        if (apellido && (apellido.length <= 3 || !regexLetras.test(apellido))) {
+            errores.push("El apellido debe tener más de 3 caracteres y contener solo letras.");
+        }
+
+        // validacion email
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email) {
+            if (!regexEmail.test(email)) {
+                errores.push("El formato del email no es válido.");
+            } else if (!email.includes('@ucasal')) {
+                errores.push("Solo se aceptan correos institucionales (debe contener @ucasal).");
+            }
+        }
+
+        // validacion nacimiento
+        if (fechaNac) {
+            const fechaNacimiento = new Date(fechaNac);
+            const hoy = new Date();
+            
+            // edad
+            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+            const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+                edad--;
+            }
+
+            if (edad <= 18 || edad >= 40) {
+                errores.push("Debes tener más de 18 años y menos de 40 años para registrarte.");
+            }
+        }
+
+        // validacion contraseña
+        if (pass1 && pass2 && pass1 !== pass2) {
+            errores.push("Las contraseñas no coinciden.");
+        }
+
+        if (errores.length > 0) {
+            errores.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                listaErrores.appendChild(li);
+            });
+            cajaErrores.classList.remove('d-none');
+        } else {
+            mensajeExito.classList.remove('d-none');
+            document.getElementById('formularioRegistro').reset();
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

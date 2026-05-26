@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Desafio 1 - Rendimiento Academico - Silvera Sandoval Ezequiel </title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .error { color: red; font-size: 14px; margin-top: 5px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        #resumen { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h2>Calculadora de Rendimiento Academico</h2>
+    
+    <div>
+        <label>Materia:</label>
+        <input type="text" id="materia" placeholder="Ej. Matemática">
+        
+        <label>Nota (0-10):</label>
+        <input type="number" id="nota" placeholder="Ej. 8">
+        
+        <button onclick="agregarMateria()">Agregar materia</button>
+        <button onclick="limpiarTodo()">Limpiar todo</button>
+        <div id="errorDOM" class="error"></div>
+    </div>
+
+    <div id="lista"></div>
+    <div id="resumen"></div>
+
+    <script>
+        let materias = [];
+        function obtenerDatos() {
+            let materia = document.getElementById("materia").value.trim();
+            let nota = parseFloat(document.getElementById("nota").value);
+            
+            if (materia === "") {
+                mostrarError("El nombre de la materia no puede estar vacio.");
+                return null;
+            }
+            if (isNaN(nota) || nota < 0 || nota > 10) {
+                mostrarError("La nota debe ser un numero valido entre 0 y 10.");
+                return null;
+            }
+            
+            mostrarError(""); 
+            return { materia: materia, nota: nota };
+        }
+
+        function mostrarError(mensaje) {
+            document.getElementById("errorDOM").innerHTML = mensaje;
+        }
+
+        function clasificarNota(nota) {
+            if (nota >= 9) return "Sobresaliente";
+            else if (nota >= 7) return "Bueno";
+            else if (nota >= 6) return "Regular";
+            else if (nota >= 4) return "Aprobado minimo";
+            else return "Insuficiente";
+        }
+        function agregarMateria() {
+            let datos = obtenerDatos();
+            if (datos === null) return;
+
+            materias.push(datos);
+            mostrarLista();
+            calcularResumen();
+
+            document.getElementById("materia").value = "";
+            document.getElementById("nota").value = "";
+            document.getElementById("materia").focus();
+        }
+
+        function mostrarLista() {
+            let divLista = document.getElementById("lista");
+            if (materias.length === 0) {
+                divLista.innerHTML = "";
+                return;
+            }
+
+            let html = "<table><tr><th>Materia</th><th>Nota</th><th>Categoría</th></tr>";
+            for (let i = 0; i < materias.length; i++) {
+                let cat = clasificarNota(materias[i].nota);
+                html += `<tr><td>${materias[i].materia}</td><td>${materias[i].nota}</td><td>${cat}</td></tr>`;
+            }
+            html += "</table>";
+            divLista.innerHTML = html;
+        }
+
+        function calcularResumen() {
+            if (materias.length === 0) {
+                document.getElementById("resumen").innerHTML = "";
+                return;
+            }
+
+            let i = 0;
+            let suma = 0;
+            let aprobadas = 0;
+            let reprobadas = 0;
+            let mejorNota = -1;
+            let peorNota = 11;
+            let nombreMejor = "";
+            let nombrePeor = "";
+
+            while (i < materias.length) {
+                let notaActual = materias[i].nota;
+                suma += notaActual;
+
+                if (notaActual >= 6) aprobadas++;
+                else reprobadas++;
+
+                if (notaActual > mejorNota) {
+                    mejorNota = notaActual;
+                    nombreMejor = materias[i].materia;
+                }
+                if (notaActual < peorNota) {
+                    peorNota = notaActual;
+                    nombrePeor = materias[i].materia;
+                }
+                i++;
+            }
+
+            let promedio = suma / materias.length;
+            
+            let html = `<strong>Promedio general:</strong> ${promedio.toFixed(2)} | `;
+            html += `<strong>Aprobadas:</strong> ${aprobadas} | `;
+            html += `<strong>Reprobadas:</strong> ${reprobadas}<br><br>`;
+            html += `<strong>Mejor nota:</strong> ${mejorNota} (${nombreMejor}) | `;
+            html += `<strong>Peor nota:</strong> ${peorNota} (${nombrePeor})`;
+
+            document.getElementById("resumen").innerHTML = html;
+        }
+
+        // extra 
+        function limpiarTodo() {
+            materias = [];
+            mostrarLista();
+            calcularResumen();
+            mostrarError("");
+        }
+    </script>
+</body>
+</html>
